@@ -13,6 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Secret scan (guardrail 9)
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz | tar xz gitleaks
+          ./gitleaks git . --no-banner --redact
 
       # Until @agentpos/core 0.2.0 is on npm: build the core from its multi-network branch and
       # link it, exactly as local development does (see pnpm-workspace.yaml).

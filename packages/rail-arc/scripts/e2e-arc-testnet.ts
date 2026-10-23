@@ -8,6 +8,7 @@
  * Reads keys from ../../.env (never printed). Testnet only: refuses to run otherwise.
  */
 import fs from "node:fs";
+import { Keypair } from "@stellar/stellar-sdk";
 import { privateKeyToAccount } from "viem/accounts";
 import type { Hex } from "viem";
 import { x402Client, x402HTTPClient } from "@x402/core/client";
@@ -90,6 +91,8 @@ async function main() {
     core,
     connector,
     storage,
+    // Ephemeral receipt key held in memory only: an e2e store must never write a key to disk.
+    receiptSecret: Keypair.random().secret(),
     x402Networks: [
       arcStoreNetwork(ARC_TESTNET, merchant, {
         url: need("AGENTPOS_ARC_FACILITATOR_URL"),

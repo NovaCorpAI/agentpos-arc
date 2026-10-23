@@ -12,3 +12,4 @@ registerArcNetworks();
 export * from "./networks.js";
 export * from "./wallet-proof.js";
 export * from "./x402.js";
+export * from "./reconcile.js";

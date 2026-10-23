@@ -91,7 +91,7 @@ pnpm install
 pnpm build && pnpm lint && pnpm typecheck && pnpm test
 ```
 
-Until `@agentpos/core` 0.2.0 is published, this repo links the core from a checkout of
+Until `@agentpos/core` 0.1.0 is published, this repo links the core from a checkout of
 `NovaCorpAI/agentpos` (branch `feat/multi-network-core`) next to it; see `pnpm-workspace.yaml`.
 
 ## License

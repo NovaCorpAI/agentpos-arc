@@ -4,7 +4,7 @@ allowBuilds:
   esbuild: true
 overrides:
   axios: ">=1.20.0"
-  # Until @agentpos/core 0.2.0 is on npm, develop against the multi-network branch of the core
+  # Until @agentpos/core 0.1.0 is on npm, develop against the multi-network branch of the core
   # checked out next to this repo (NovaCorpAI/agentpos, branch feat/multi-network-core).
   # Remove this line once the release is published.
   "@agentpos/core": "link:../agentpos-public-multinet/packages/core"

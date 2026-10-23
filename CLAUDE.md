@@ -31,3 +31,15 @@ docs.arc.io, developers.circle.com/facilitator-service, `@x402/evm` 2.28.0.
 
 Conventional commits. Código y comentarios en inglés; en textos en español, sin guiones largos.
 Errores siempre `AgentPOSError { code, message, hint }`.
+
+## Checklist antes de Arc mainnet (no saltarse)
+
+- [ ] En Circle: activar 2FA y registrar un medio de pago (sin eso el permiso "Facilitator"
+      no se desbloquea en mainnet). La llave de mainnet Standard sin IP se revocó el 2026-10-23.
+- [ ] Llave de mainnet **Restricted** con solo "Facilitator: Read & Write", y
+      **restringida por IP** a la IP fija del servidor
+      donde corre la tienda (la de testnet quedó sin restricción a propósito: IP dinámica y CI).
+- [ ] Gate propio de Arc verde en testnet y confirmación del founder en el chat; recién ahí
+      `eip155:5042` entra a `MAINNET_READY_NETWORKS` en el núcleo.
+- [ ] Precio del facilitador confirmado y medido.
+- [ ] Conciliación de pagos de Arc leyendo la cadena.

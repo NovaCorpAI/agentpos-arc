@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Until @agentpos/core 0.2.0 is on npm: build the core from its multi-network branch and
+      # link it, exactly as local development does (see pnpm-workspace.yaml).
+      - uses: actions/checkout@v4
+        with:
+          repository: NovaCorpAI/agentpos
+          ref: feat/multi-network-core
+          path: core-src
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Build the core
+        working-directory: core-src
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @agentpos/measure --filter @agentpos/core build
+
+      - name: Point the link at the CI checkout
+        run: sed -i 's#link:../agentpos-public-multinet/packages/core#link:./core-src/packages/core#' pnpm-workspace.yaml
+
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test

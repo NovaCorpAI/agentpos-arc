@@ -8,6 +8,8 @@ overrides:
   axios: '>=1.20.0'
   '@agentpos/core': link:../agentpos-public-multinet/packages/core
   '@agentpos/site': link:../agentpos-public-multinet/packages/site
+  '@agentpos/connectors': link:../agentpos-public-multinet/packages/connectors
+  '@agentpos/scanner': link:../agentpos-public-multinet/packages/scanner
 
 importers:
 
@@ -47,6 +49,12 @@ importers:
         specifier: ^2.48.11
         version: 2.57.10(typescript@5.9.3)(zod@3.25.76)
     devDependencies:
+      '@agentpos/connectors':
+        specifier: link:../../../agentpos-public-multinet/packages/connectors
+        version: link:../../../agentpos-public-multinet/packages/connectors
+      '@agentpos/scanner':
+        specifier: link:../../../agentpos-public-multinet/packages/scanner
+        version: link:../../../agentpos-public-multinet/packages/scanner
       '@agentpos/site':
         specifier: link:../../../agentpos-public-multinet/packages/site
         version: link:../../../agentpos-public-multinet/packages/site

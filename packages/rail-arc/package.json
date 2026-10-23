@@ -24,7 +24,8 @@
     "typecheck": "tsc -p tsconfig.typecheck.json",
     "test": "vitest run",
     "lint": "eslint src",
-    "e2e:arc-testnet": "tsx scripts/e2e-arc-testnet.ts"
+    "e2e:arc-testnet": "tsx scripts/e2e-arc-testnet.ts",
+    "e2e:arc-woo": "tsx scripts/e2e-arc-woo.ts"
   },
   "dependencies": {
     "@agentpos/core": "^0.2.0",
@@ -39,6 +40,8 @@
     "@stellar/stellar-sdk": "^16.3.1",
     "@agentpos/site": "^0.2.0",
     "@x402/fetch": "2.28.0",
-    "tsx": "^4.20.6"
+    "tsx": "^4.20.6",
+    "@agentpos/connectors": "^0.2.0",
+    "@agentpos/scanner": "^0.2.0"
   }
 }

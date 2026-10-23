@@ -40,6 +40,17 @@ after settlement, with the amount converted exactly to the catalog's unit.
 - USDC moved buyer `0x42Db…0Bf0` to merchant `0x7528…93f8`: 0.25 USDC, straight to the merchant
 - Reproduce: `pnpm --filter @agentpos/rail-arc e2e:arc-testnet` (needs `.env`, see `.env.example`)
 
+### Order created in a real WooCommerce store (2026-10-23)
+
+The same flow against the AgentPOS WooCommerce demo store (docker): AgentPOS scanned the store,
+the merchant's catalog was confirmed and published, an agent with a 15 USDC per-payment ceiling
+bought a "Sticker Pack" for 3 USDC on Arc, the Circle Facilitator Service settled it, and the
+paid order appeared in WooCommerce (#21, status `processing`) carrying the Arc transaction as its
+`transaction_id`.
+
+- Transaction: [`0x9d79325b…15eb`](https://explorer.testnet.arc.io/tx/0x9d79325bdfe6ca7a6bb4f173a1ae4cdd961f51ea788bc1ecb6e4e1b434d015eb)
+- Reproduce: `pnpm demo:up` in the core repo, then `pnpm --filter @agentpos/rail-arc e2e:arc-woo`
+
 AgentPOS already settles real USDC purchases on Stellar mainnet; this repository brings the same
 merchant flow to Arc. It builds on the open-source AgentPOS core
 ([NovaCorpAI/agentpos](https://github.com/NovaCorpAI/agentpos), Apache-2.0).

@@ -9,3 +9,5 @@ overrides:
   # Remove this line once the release is published.
   "@agentpos/core": "link:../agentpos-public-multinet/packages/core"
   "@agentpos/site": "link:../agentpos-public-multinet/packages/site"
+  "@agentpos/connectors": "link:../agentpos-public-multinet/packages/connectors"
+  "@agentpos/scanner": "link:../agentpos-public-multinet/packages/scanner"

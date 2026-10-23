@@ -8,3 +8,4 @@ overrides:
   # checked out next to this repo (NovaCorpAI/agentpos, branch feat/multi-network-core).
   # Remove this line once the release is published.
   "@agentpos/core": "link:../agentpos-public-multinet/packages/core"
+  "@agentpos/site": "link:../agentpos-public-multinet/packages/site"

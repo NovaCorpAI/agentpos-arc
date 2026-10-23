@@ -18,7 +18,7 @@ import type {
   X402NetworkExtension,
 } from "@agentpos/core";
 import { AgentPOSError, assertAddressFor, usdcOnChain } from "@agentpos/core";
-import { ARC_USDC, isArcNetwork, registerArcNetworks } from "./networks.js";
+import { ARC_USDC, ARC_USDC_EIP712, isArcNetwork, registerArcNetworks } from "./networks.js";
 import type { ArcNetwork } from "./networks.js";
 
 /** Reverse-DNS id of this rail, like `org.x402.stellar` for the core's Stellar rail. */
@@ -89,6 +89,30 @@ export function arcAccept(network: string, payTo: string, price: UsdcMinor): Ext
     payTo: assertAddressFor(arc, payTo),
     asset: ARC_USDC,
     amount: usdcOnChain(price, arc),
+    extra: { ...ARC_USDC_EIP712 },
+  };
+}
+
+/**
+ * What a store passes to the AgentPOS sidecar (`x402Networks`) to take payments on Arc: the
+ * resource extension, the merchant's own Arc address and the USDC asset with its EIP-712 domain.
+ */
+export function arcStoreNetwork(
+  network: string,
+  merchantAddress: string,
+  facilitator: CircleFacilitatorOptions,
+): {
+  extension: X402NetworkExtension;
+  payTo: string;
+  asset: string;
+  extra: Record<string, unknown>;
+} {
+  const extension = arcResourceExtension(network, facilitator);
+  return {
+    extension,
+    payTo: assertAddressFor(extension.network, merchantAddress),
+    asset: ARC_USDC,
+    extra: { ...ARC_USDC_EIP712 },
   };
 }
 

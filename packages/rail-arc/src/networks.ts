@@ -18,6 +18,11 @@ export type ArcNetwork = typeof ARC_MAINNET | typeof ARC_TESTNET;
 /** USDC on Arc, same address on mainnet and testnet. ERC-20 interface, 6 decimals. */
 export const ARC_USDC = "0x3600000000000000000000000000000000000000" as const;
 export const ARC_USDC_DECIMALS = 6;
+/**
+ * EIP-712 domain of USDC on Arc, which the exact scheme needs in every 402 so the buyer can sign
+ * the EIP-3009 authorization. Confirmed by the Circle facilitator's /supported on 2026-10-23.
+ */
+export const ARC_USDC_EIP712 = { name: "USDC", version: "2" } as const;
 
 export const ARC_RPC_URLS: Record<ArcNetwork, string> = {
   [ARC_MAINNET]: "https://rpc.mainnet.arc.io",

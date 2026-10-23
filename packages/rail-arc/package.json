@@ -23,7 +23,8 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.typecheck.json",
     "test": "vitest run",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "e2e:arc-testnet": "tsx scripts/e2e-arc-testnet.ts"
   },
   "dependencies": {
     "@agentpos/core": "^0.2.0",
@@ -35,6 +36,9 @@
     "@types/node": "^24.19.2",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11",
-    "@stellar/stellar-sdk": "^16.3.1"
+    "@stellar/stellar-sdk": "^16.3.1",
+    "@agentpos/site": "^0.2.0",
+    "@x402/fetch": "2.28.0",
+    "tsx": "^4.20.6"
   }
 }

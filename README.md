@@ -21,13 +21,24 @@ This repository makes **Arc**, Circle's L1, a settlement network for that checko
 
 ## Status
 
-| Piece                                                                         | State                             |
-| ----------------------------------------------------------------------------- | --------------------------------- |
-| `@agentpos/rail-arc`: Arc networks, exact pricing, x402 wiring, wallet proof  | Built, unit-tested                |
-| Store checkout offering Arc next to its current network                       | Next: wiring in the store sidecar |
-| End-to-end purchase on Arc testnet through the Circle Facilitator             | Next                              |
-| Mainnet demo store on Arc                                                     | After testnet                     |
-| Usage-based pricing (`upto`) and Circle agent wallets for the reference buyer | Planned                           |
+| Piece                                                                         | State                                    |
+| ----------------------------------------------------------------------------- | ---------------------------------------- |
+| `@agentpos/rail-arc`: Arc networks, exact pricing, x402 wiring, wallet proof  | Built, unit-tested                       |
+| Store checkout offering Arc next to its current network                       | Built in the AgentPOS sidecar            |
+| End-to-end purchase on Arc testnet through the Circle Facilitator             | **Proven** (see below)                   |
+| Mainnet demo store on Arc                                                     | After the Arc gate; locked in code today |
+| Usage-based pricing (`upto`) and Circle agent wallets for the reference buyer | Planned                                  |
+
+### First purchase on Arc testnet (2026-10-23)
+
+An AgentPOS store offered Stellar and Arc in its 402. A buyer agent, holding its own test wallet
+and a 1 USDC per-payment ceiling, chose Arc and signed an EIP-3009 authorization for 0.25 USDC.
+The Circle Facilitator Service settled it and paid the gas; the store created the order only
+after settlement, with the amount converted exactly to the catalog's unit.
+
+- Transaction: [`0x7f5a1466…b47a`](https://explorer.testnet.arc.io/tx/0x7f5a1466fc430658ddc45f96eea9c345b3685244109ee1e35aa46309b8c3b47a), block 68747728, status success
+- USDC moved buyer `0x42Db…0Bf0` to merchant `0x7528…93f8`: 0.25 USDC, straight to the merchant
+- Reproduce: `pnpm --filter @agentpos/rail-arc e2e:arc-testnet` (needs `.env`, see `.env.example`)
 
 AgentPOS already settles real USDC purchases on Stellar mainnet; this repository brings the same
 merchant flow to Arc. It builds on the open-source AgentPOS core

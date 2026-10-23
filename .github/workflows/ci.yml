@@ -32,10 +32,10 @@ jobs:
         working-directory: core-src
         run: |
           pnpm install --frozen-lockfile
-          pnpm --filter @agentpos/measure --filter @agentpos/core build
+          pnpm build
 
       - name: Point the link at the CI checkout
-        run: sed -i 's#link:../agentpos-public-multinet/packages/core#link:./core-src/packages/core#' pnpm-workspace.yaml
+        run: sed -i 's#link:../agentpos-public-multinet/packages/#link:./core-src/packages/#g' pnpm-workspace.yaml
 
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm build

@@ -21,30 +21,14 @@ jobs:
           curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz | tar xz gitleaks
           ./gitleaks git . --no-banner --redact
 
-      # Until @agentpos/core 0.1.0 is on npm: build the core from its multi-network branch and
-      # link it, exactly as local development does (see pnpm-workspace.yaml).
-      - uses: actions/checkout@v4
-        with:
-          repository: NovaCorpAI/agentpos
-          ref: feat/multi-network-core
-          path: core-src
-
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: pnpm
 
-      - name: Build the core
-        working-directory: core-src
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm build
-
-      - name: Point the link at the CI checkout
-        run: sed -i 's#link:../agentpos-public-multinet/packages/#link:./core-src/packages/#g' pnpm-workspace.yaml
-
-      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --prod
       - run: pnpm build
       - run: pnpm lint
       - run: pnpm typecheck

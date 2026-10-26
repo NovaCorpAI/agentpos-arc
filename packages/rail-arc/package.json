@@ -28,7 +28,7 @@
     "e2e:arc-woo": "tsx scripts/e2e-arc-woo.ts"
   },
   "dependencies": {
-    "@agentpos/core": "^0.1.0",
+    "@agentpos/core": "^0.1.1",
     "@x402/core": "2.28.0",
     "@x402/evm": "2.28.0",
     "viem": "^2.48.11"
@@ -38,10 +38,10 @@
     "typescript": "^5.9.3",
     "vitest": "^4.1.11",
     "@stellar/stellar-sdk": "^16.3.1",
-    "@agentpos/site": "^0.1.0",
+    "@agentpos/site": "^0.1.1",
     "@x402/fetch": "2.28.0",
     "tsx": "^4.20.6",
-    "@agentpos/connectors": "^0.1.0",
-    "@agentpos/scanner": "^0.1.0"
+    "@agentpos/connectors": "^0.1.1",
+    "@agentpos/scanner": "^0.1.1"
   }
 }

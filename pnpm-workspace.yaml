@@ -4,10 +4,9 @@ allowBuilds:
   esbuild: true
 overrides:
   axios: ">=1.20.0"
-  # Until @agentpos/core 0.1.0 is on npm, develop against the multi-network branch of the core
-  # checked out next to this repo (NovaCorpAI/agentpos, branch feat/multi-network-core).
-  # Remove this line once the release is published.
-  "@agentpos/core": "link:../agentpos-public-multinet/packages/core"
-  "@agentpos/site": "link:../agentpos-public-multinet/packages/site"
-  "@agentpos/connectors": "link:../agentpos-public-multinet/packages/connectors"
-  "@agentpos/scanner": "link:../agentpos-public-multinet/packages/scanner"
+  # GHSA-mrhx-c7xc-m3w5: @x402/core declares zod 3, which has no patch; it only uses APIs that
+  # are identical in zod 4 (see the @agentpos/core README).
+  zod: "^4.6.6"
+minimumReleaseAgeExclude:
+  # Our own packages, published by our release workflow with provenance: no hold-back.
+  - "@agentpos/*"

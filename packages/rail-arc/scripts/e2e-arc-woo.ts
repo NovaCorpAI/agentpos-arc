@@ -178,6 +178,13 @@ async function main() {
   );
   if (woo.transaction_id !== settled.transaction)
     throw new Error("WooCommerce order does not carry the Arc tx hash");
+
+  // Reconciliation (D3): the sidecar reads the merchant's wallet on Arc and finds this payment
+  // already recorded, so nothing is reported as money without an order.
+  const [rec] = (await store.reconciler?.run()) ?? [];
+  if (!rec || rec.error || rec.paymentsWithoutOrder !== 0)
+    throw new Error(`reconciliation did not come back clean: ${JSON.stringify(rec)}`);
+  log(`reconciliation on ${rec.network}: 0 payments without an order`);
   log(
     `E2E OK: agent bought "${pick.title}" on Arc testnet, Circle settled, WooCommerce order #${order.externalOrderId} paid`,
   );

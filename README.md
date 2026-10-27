@@ -74,6 +74,30 @@ const route = buildRouteConfig(cfg, { payTo: "G...", amount: usdc("2.5") }, [
 ]);
 ```
 
+### The buyer's side: an agent paying on Arc under its mandate
+
+`arcBuyerNetwork(network, signer)` gives the AgentPOS buyer (`@agentpos/mcp-buyer`) the buyer's
+own Arc wallet as one more network. The human's mandate decides: Arc is paid on only when the
+mandate lists it in `allowedNetworks`, each payment is capped at the cart total converted exactly
+to 6 decimals, and the period limit adds up what the agent spent on every network.
+
+```ts
+import { BuyerService } from "@agentpos/mcp-buyer";
+import { ARC_TESTNET, arcBuyerNetwork } from "@agentpos/rail-arc";
+
+// mandate: { "maxPerTx": "15", "maxTotal": "20", "allowedNetworks": ["eip155:5042002"] }
+const buyer = new BuyerService({ profile, networks: [arcBuyerNetwork(ARC_TESTNET, account)] });
+```
+
+The MCP server takes the same through `buildBuyerServer({ depsOverrides: { networks } })`.
+
+Checked live on Arc testnet (2026-10-27, `pnpm --filter @agentpos/rail-arc e2e:arc-buyer`): a
+buyer whose mandate allows only Arc found a "Sticker Pack" in the WooCommerce demo store and paid
+3 USDC on Arc
+([`0x2acb363f…e4b5`](https://explorer.testnet.arc.io/tx/0x2acb363ff7ddced3174e4b16c0fcfeb6cd42157d3c2f4a00619e8fead022e4b5)),
+order #26 paid, the spending log counted it in the catalog's unit, and the store's reconciliation
+came back clean.
+
 ### Money with no order (reconciliation)
 
 `arcStoreNetwork` also brings a payment watcher (`createArcPaymentWatcher`): it reads the USDC

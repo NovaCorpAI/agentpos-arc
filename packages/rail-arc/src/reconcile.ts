@@ -12,8 +12,8 @@
  */
 import { createPublicClient, http, parseAbiItem } from "viem";
 import type { Hex } from "viem";
-import type { MinorAmount } from "@agentpos/core";
-import { AgentPOSError, rescaleMinor, USDC_DECIMALS } from "@agentpos/core";
+import type { MinorAmount, UsdcMinor } from "@agentpos/core";
+import { AgentPOSError, rescaleMinor, USDC_DECIMALS, usdcFromMinor } from "@agentpos/core";
 import { ARC_RPC_URLS, ARC_USDC, ARC_USDC_DECIMALS, isArcNetwork } from "./networks.js";
 
 const TRANSFER = parseAbiItem(
@@ -150,4 +150,79 @@ export function reconcileArcPayments(
   }
   for (const [key, list] of byTx) if (!seen.has(key)) result.paymentsWithoutOrder.push(...list);
   return result;
+}
+
+/** A payment the merchant's wallet received, as the AgentPOS sidecar reconciles it. */
+export interface ArcReceivedPayment {
+  txHash: string;
+  /** In the catalog's unit (7 decimals), converted exactly from Arc's 6. */
+  amountMinor: UsdcMinor;
+  from: string;
+}
+
+export interface ArcPaymentWatcherOptions {
+  network: string;
+  /** The merchant's own Arc wallet (public address only). */
+  merchant: string;
+  rpcUrl?: string;
+  /**
+   * How far back the first pass reads, in blocks (default 20,000: about 5 hours on Arc testnet,
+   * which made ~97,000 blocks a day in Oct 2026, read in 3 RPC calls). The sidecar keeps the
+   * payments it has seen in memory, so after a restart this window is what gets checked again.
+   */
+  lookbackBlocks?: bigint;
+  /** Tests only: chain head and transfer reader. */
+  head?: () => Promise<bigint>;
+  fetchTransfers?: typeof fetchArcUsdcTransfers;
+}
+
+/**
+ * The `PaymentWatcher` the AgentPOS sidecar takes in `x402Networks[].watcher` (D3): each call
+ * returns the USDC received by the merchant since the previous call, one entry per transaction.
+ * Read-only, no key. Pass it next to `arcResourceExtension` when the store offers Arc.
+ */
+export function createArcPaymentWatcher(options: ArcPaymentWatcherOptions): {
+  recentPayments(): Promise<ArcReceivedPayment[]>;
+} {
+  if (!isArcNetwork(options.network)) {
+    throw new AgentPOSError("CHAIN_UNKNOWN", `'${options.network}' is not an Arc network`, {
+      hint: "Use eip155:5042 or eip155:5042002.",
+    });
+  }
+  const rpcUrl = options.rpcUrl ?? ARC_RPC_URLS[options.network];
+  const head =
+    options.head ?? (() => createPublicClient({ transport: http(rpcUrl) }).getBlockNumber());
+  const fetchTransfers = options.fetchTransfers ?? fetchArcUsdcTransfers;
+  const lookback = options.lookbackBlocks ?? 20_000n;
+  let next: bigint | undefined;
+  return {
+    async recentPayments() {
+      const to = await head();
+      const from = next ?? (to > lookback ? to - lookback : 0n);
+      if (from > to) return [];
+      const transfers = await fetchTransfers({
+        network: options.network,
+        merchant: options.merchant,
+        fromBlock: from,
+        toBlock: to,
+        rpcUrl,
+      });
+      // Advance only after a successful read, so a failed window is read again next time.
+      next = to + 1n;
+      const byTx = new Map<string, ArcReceivedPayment>();
+      for (const t of transfers) {
+        const key = t.txHash.toLowerCase();
+        const amount = usdcFromMinor(
+          rescaleMinor(t.amount.minor, ARC_USDC_DECIMALS, USDC_DECIMALS),
+        );
+        const prev = byTx.get(key);
+        byTx.set(key, {
+          txHash: key,
+          amountMinor: prev ? usdcFromMinor(prev.amountMinor + amount) : amount,
+          from: t.from,
+        });
+      }
+      return [...byTx.values()];
+    },
+  };
 }

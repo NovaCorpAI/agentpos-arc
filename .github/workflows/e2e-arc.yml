@@ -1,0 +1,44 @@
+name: E2E Arc testnet
+
+# A real purchase on Arc testnet through the Circle Facilitator Service (risk E4): once a day and
+# on demand, never on pull requests (forks get no secrets, and each run spends test USDC).
+# The buyer is a wallet used only by CI; its balance is checked first, with a warning below
+# 5 USDC and a stop below 1 USDC that names the address to refill at faucet.circle.com.
+
+on:
+  schedule:
+    - cron: "17 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-arc-testnet
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    environment: arc-testnet
+    env:
+      ARC_TESTNET_BUYER_PRIVATE_KEY: ${{ secrets.ARC_TESTNET_BUYER_PRIVATE_KEY }}
+      ARC_TESTNET_MERCHANT_ADDRESS: ${{ vars.ARC_TESTNET_MERCHANT_ADDRESS }}
+      AGENTPOS_ARC_FACILITATOR_URL: ${{ vars.AGENTPOS_ARC_FACILITATOR_URL }}
+      AGENTPOS_ARC_FACILITATOR_API_KEY_TESTNET: ${{ secrets.AGENTPOS_ARC_FACILITATOR_API_KEY_TESTNET }}
+      # The store's own network (Stellar) needs its facilitator too: without it the checkout cannot
+      # build its payment request at all.
+      AGENTPOS_FACILITATOR_API_KEY_TESTNET: ${{ secrets.AGENTPOS_FACILITATOR_API_KEY_TESTNET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: CI wallet balance
+        run: pnpm --filter @agentpos/rail-arc ci:wallet
+      - name: Purchase on Arc testnet
+        run: pnpm --filter @agentpos/rail-arc e2e:arc-testnet

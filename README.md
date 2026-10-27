@@ -76,25 +76,15 @@ const route = buildRouteConfig(cfg, { payTo: "G...", amount: usdc("2.5") }, [
 
 ### Money with no order (reconciliation)
 
-`createArcPaymentWatcher` reads the USDC that reached the merchant's Arc wallet, read-only and
-without a key. Given to the AgentPOS sidecar as the network's `watcher` (`@agentpos/site` 0.1.2
-or later), it is compared every 5 minutes with the payments the store recorded, and a payment with
-no order raises a critical `PAYMENT_WITHOUT_ORDER` alert listing the pending orders of the same
-amount. It never creates an order or moves funds.
+`arcStoreNetwork` also brings a payment watcher (`createArcPaymentWatcher`): it reads the USDC
+that reached the merchant's Arc wallet, read-only and without a key. The AgentPOS sidecar compares
+it every 5 minutes with the payments the store recorded, and a payment with no order raises a
+critical `PAYMENT_WITHOUT_ORDER` alert listing the pending orders of the same amount. It never
+creates an order or moves funds. Pass `false` as the fourth argument to leave it out.
 
-```ts
-import { createArcPaymentWatcher } from "@agentpos/rail-arc";
-
-const network = {
-  extension: arc,
-  payTo: "0xYourMerchantWallet",
-  asset: ARC_USDC,
-  watcher: createArcPaymentWatcher({ network: ARC_TESTNET, merchant: "0xYourMerchantWallet" }),
-};
-```
-
-Checked live on Arc testnet (2026-10-27): over the last ~97,000 blocks it found the purchase
-`0xf47d4b2a…e570` (0.25 USDC) in 3.6 s, and the next pass returned nothing new.
+Checked live on Arc testnet (2026-10-27): the WooCommerce e2e bought a "Sticker Pack" for 3 USDC
+([`0x70491c8b…0b8d`](https://explorer.testnet.arc.io/tx/0x70491c8bec315720c6d7cfa4701be3c1cf7a77627336e7cb9e7ff9b3ef770b8d),
+order #23) and the reconciliation that followed reported no payment without an order.
 
 ## Arc reference
 

@@ -20,6 +20,8 @@ import type {
 import { AgentPOSError, assertAddressFor, usdcOnChain } from "@agentpos/core";
 import { ARC_USDC, ARC_USDC_EIP712, isArcNetwork, registerArcNetworks } from "./networks.js";
 import type { ArcNetwork } from "./networks.js";
+import { createArcPaymentWatcher } from "./reconcile.js";
+import type { ArcPaymentWatcherOptions } from "./reconcile.js";
 
 /** Reverse-DNS id of this rail, like `org.x402.stellar` for the core's Stellar rail. */
 export const X402_ARC_RAIL_ID = "org.x402.arc" as const;
@@ -95,24 +97,38 @@ export function arcAccept(network: string, payTo: string, price: UsdcMinor): Ext
 
 /**
  * What a store passes to the AgentPOS sidecar (`x402Networks`) to take payments on Arc: the
- * resource extension, the merchant's own Arc address and the USDC asset with its EIP-712 domain.
+ * resource extension, the merchant's own Arc address, the USDC asset with its EIP-712 domain,
+ * and a payment watcher so the sidecar reconciles the merchant's wallet against its orders (D3).
+ * Pass `reconcile: false` to leave the watcher out, or watcher options to tune it.
  */
 export function arcStoreNetwork(
   network: string,
   merchantAddress: string,
   facilitator: CircleFacilitatorOptions,
+  reconcile: Omit<ArcPaymentWatcherOptions, "network" | "merchant"> | false = {},
 ): {
   extension: X402NetworkExtension;
   payTo: string;
   asset: string;
   extra: Record<string, unknown>;
+  watcher?: ReturnType<typeof createArcPaymentWatcher>;
 } {
   const extension = arcResourceExtension(network, facilitator);
+  const payTo = assertAddressFor(extension.network, merchantAddress);
   return {
     extension,
-    payTo: assertAddressFor(extension.network, merchantAddress),
+    payTo,
     asset: ARC_USDC,
     extra: { ...ARC_USDC_EIP712 },
+    ...(reconcile === false
+      ? {}
+      : {
+          watcher: createArcPaymentWatcher({
+            ...reconcile,
+            network: extension.network,
+            merchant: payTo,
+          }),
+        }),
   };
 }
 

@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { usdc } from "@agentpos/core";
-import { ARC_TESTNET, createArcPaymentWatcher, reconcileArcPayments } from "./index.js";
+import {
+  ARC_TESTNET,
+  arcStoreNetwork,
+  createArcPaymentWatcher,
+  reconcileArcPayments,
+} from "./index.js";
 import type { ArcTransfer, FetchTransfersInput } from "./index.js";
 
 const transfer = (txHash: string, minor: bigint, logIndex = 3): ArcTransfer => ({
@@ -103,5 +108,18 @@ describe("Arc payment watcher (D3)", () => {
     expect(() =>
       createArcPaymentWatcher({ network: "stellar:testnet", merchant: MERCHANT }),
     ).toThrow(/not an Arc network/);
+  });
+});
+
+describe("arcStoreNetwork and reconciliation", () => {
+  const MERCHANT = "0x75284c0856d11112321014Cd4405dEc5d84393f8";
+  const facilitator = { url: "https://facilitator.test", apiKey: "test" };
+
+  it("brings a payment watcher by default, so the sidecar reconciles Arc", () => {
+    expect(arcStoreNetwork(ARC_TESTNET, MERCHANT, facilitator).watcher).toBeDefined();
+  });
+
+  it("leaves it out on request", () => {
+    expect(arcStoreNetwork(ARC_TESTNET, MERCHANT, facilitator, false).watcher).toBeUndefined();
   });
 });

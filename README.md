@@ -127,6 +127,11 @@ pnpm install
 pnpm build && pnpm lint && pnpm typecheck && pnpm test
 ```
 
+A real purchase on Arc testnet also runs in CI once a day and on demand (`E2E Arc testnet`
+workflow), paid from a wallet used only by CI. It checks that wallet's balance first: a warning
+below 5 USDC, and a stop below 1 USDC naming the address to refill at faucet.circle.com
+(`pnpm --filter @agentpos/rail-arc ci:wallet`).
+
 The core comes from npm (`@agentpos/core`, `@agentpos/site` and friends, published with
 provenance from [NovaCorpAI/agentpos](https://github.com/NovaCorpAI/agentpos)).
 

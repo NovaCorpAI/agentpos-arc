@@ -8,7 +8,6 @@
  * Testnet only. Keys come from ../../.env and are never printed. The store's receipt key lives
  * in memory only.
  */
-import fs from "node:fs";
 import { Keypair } from "@stellar/stellar-sdk";
 import { privateKeyToAccount } from "viem/accounts";
 import type { Hex } from "viem";
@@ -20,26 +19,13 @@ import { WooCommerceConnector } from "@agentpos/connectors";
 import { scanSite } from "@agentpos/scanner";
 import { CatalogService, createAgentPOSApp, parseSiteConfig, SiteStorage } from "@agentpos/site";
 import { ARC_TESTNET, ARC_USDC, arcStoreNetwork, registerArcNetworks } from "../src/index.js";
+import { env, need } from "./env.js";
 
 const WOO_URL = process.env.DEMO_STORE_URL ?? "http://localhost:8080";
 const WOO_CK = "ck_agentposdemo0000000000000000000000000000"; // public demo key, docker only
 const WOO_CS = "cs_agentposdemo0000000000000000000000000000";
 const CEILING_ARC_MINOR = 15_000_000n; // the buyer's per-payment ceiling: 15 USDC (6 decimals)
 
-function loadEnv(path: string): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const line of fs.readFileSync(path, "utf8").split(/\r?\n/)) {
-    const m = /^([A-Z0-9_]+)=(.*)$/.exec(line.trim());
-    if (m && m[2]) out[m[1] as string] = m[2].trim();
-  }
-  return out;
-}
-const env = { ...loadEnv("../../.env"), ...loadEnv("../../../agentgate/.env") };
-const need = (k: string): string => {
-  const v = env[k];
-  if (!v) throw new Error(`missing ${k} in .env`);
-  return v;
-};
 const t0 = Date.now();
 const log = (msg: string) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s] ${msg}`);
 

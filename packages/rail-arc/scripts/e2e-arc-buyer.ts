@@ -9,7 +9,6 @@
  * Testnet only. Keys come from ../../.env and are never printed. The buyer's Stellar side gets a
  * throwaway keypair: the mandate leaves Stellar out, so its ceiling is zero and it signs nothing.
  */
-import fs from "node:fs";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -29,25 +28,12 @@ import {
   arcStoreNetwork,
   registerArcNetworks,
 } from "../src/index.js";
+import { env, need } from "./env.js";
 
 const WOO_URL = process.env.DEMO_STORE_URL ?? "http://localhost:8080";
 const WOO_CK = "ck_agentposdemo0000000000000000000000000000"; // public demo key, docker only
 const WOO_CS = "cs_agentposdemo0000000000000000000000000000";
 
-function loadEnv(path: string): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const line of fs.readFileSync(path, "utf8").split(/\r?\n/)) {
-    const m = /^([A-Z0-9_]+)=(.*)$/.exec(line.trim());
-    if (m && m[2]) out[m[1] as string] = m[2].trim();
-  }
-  return out;
-}
-const env = { ...loadEnv("../../.env"), ...loadEnv("../../../agentgate/.env") };
-const need = (k: string): string => {
-  const v = env[k];
-  if (!v) throw new Error(`missing ${k} in .env`);
-  return v;
-};
 const t0 = Date.now();
 const log = (msg: string) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s] ${msg}`);
 

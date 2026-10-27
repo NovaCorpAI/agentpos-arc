@@ -7,7 +7,6 @@
  *
  * Reads keys from ../../.env (never printed). Testnet only: refuses to run otherwise.
  */
-import fs from "node:fs";
 import { Keypair } from "@stellar/stellar-sdk";
 import { privateKeyToAccount } from "viem/accounts";
 import type { Hex } from "viem";
@@ -18,22 +17,7 @@ import { resolveConfig, usdc } from "@agentpos/core";
 import type { CatalogItem, OrderConnector, PaidOrderInput } from "@agentpos/core";
 import { createAgentPOSApp, parseSiteConfig, SiteStorage } from "@agentpos/site";
 import { ARC_TESTNET, arcStoreNetwork, registerArcNetworks } from "../src/index.js";
-
-function loadEnv(path: string): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const line of fs.readFileSync(path, "utf8").split(/\r?\n/)) {
-    const m = /^([A-Z0-9_]+)=(.*)$/.exec(line.trim());
-    if (m && m[2]) out[m[1] as string] = m[2].trim();
-  }
-  return out;
-}
-
-const env = { ...loadEnv("../../.env"), ...loadEnv("../../../agentgate/.env") };
-const need = (k: string): string => {
-  const v = env[k];
-  if (!v) throw new Error(`missing ${k} in .env`);
-  return v;
-};
+import { env, need } from "./env.js";
 
 const t0 = Date.now();
 const log = (msg: string) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s] ${msg}`);

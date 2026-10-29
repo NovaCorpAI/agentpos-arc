@@ -34,8 +34,7 @@ Errores siempre `AgentPOSError { code, message, hint }`.
 
 ## Checklist antes de Arc mainnet (no saltarse)
 
-- [ ] En Circle: activar 2FA y registrar un medio de pago (sin eso el permiso "Facilitator"
-      no se desbloquea en mainnet). La llave de mainnet Standard sin IP se revocó el 2026-10-23.
+- [ ] Cuenta de Circle lista para mainnet (permiso "Facilitator" habilitado).
 - [ ] Llave de mainnet **Restricted** con solo "Facilitator: Read & Write", y
       **restringida por IP** a la IP fija del servidor
       donde corre la tienda (la de testnet quedó sin restricción a propósito: IP dinámica y CI).

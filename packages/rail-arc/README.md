@@ -56,6 +56,25 @@ The agent pays on Arc only when the mandate lists it, each payment is capped at 
 converted exactly to Arc's 6-decimal USDC (a price Arc cannot represent is refused, never
 rounded), and the period limit adds up spending across every network.
 
+### The buyer's wallet in Circle Wallets
+
+The agent can pay from a developer-controlled wallet in
+[Circle Wallets](https://developers.circle.com/wallets) (an EOA on Arc), so its key never enters
+the agent's process. Circle signs each EIP-3009 authorization through `signTypedData`; the
+signer checks that the signature recovers to the wallet's address before it is sent.
+
+```ts
+import { initiateDeveloperControlledWalletsClient } from "@circle-fin/developer-controlled-wallets";
+import { ARC_TESTNET, arcBuyerNetwork, circleWalletSigner } from "@agentpos/rail-arc";
+
+const circle = initiateDeveloperControlledWalletsClient({ apiKey, entitySecret });
+const signer = circleWalletSigner(circle, { walletId, address });
+const buyer = new BuyerService({ profile, networks: [arcBuyerNetwork(ARC_TESTNET, signer)] });
+```
+
+`@circle-fin/developer-controlled-wallets` is yours to install; this package does not depend on
+it. The mandate stays the limit: it is checked before Circle is ever asked to sign.
+
 ## What else is exported
 
 - `ARC_MAINNET`, `ARC_TESTNET`, `registerArcNetworks()`: the networks and their USDC.

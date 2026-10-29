@@ -31,6 +31,24 @@ importers:
         specifier: ^4.1.11
         version: 4.1.12(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
 
+  apps/demo-store:
+    dependencies:
+      '@agentpos/connectors':
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)
+      '@agentpos/core':
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)
+      '@agentpos/rail-arc':
+        specifier: workspace:^
+        version: link:../../packages/rail-arc
+      '@agentpos/scanner':
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)
+      '@agentpos/site':
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)(typescript@5.9.3)
+
   packages/rail-arc:
     dependencies:
       '@agentpos/core':

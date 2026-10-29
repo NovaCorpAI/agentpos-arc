@@ -1,0 +1,13 @@
+{
+  "siteUrl": "https://arc-demo.agentposhq.com",
+  "displayName": "AgentPOS Demo Store (Arc testnet)",
+  "payTo": "GDTD355XEM6S5DAZGZUO46I3X6YYB4EBHP2UPKA6F7NVGTRCQ7SZNG5P",
+  "platform": "woocommerce",
+  "woocommerce": { "baseUrl": "https://arc-demo.agentposhq.com" },
+  "dataDir": ".agentpos",
+  "locale": "en",
+  "policies": {
+    "shipping": "Demo store on test networks: nothing is shipped and no real money moves.",
+    "contact": "https://github.com/NovaCorpAI/agentpos-arc/issues"
+  }
+}

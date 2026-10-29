@@ -1,0 +1,13 @@
+
+# The public AgentPOS demo store on Arc TESTNET (agentpos-arc repo, apps/demo-store). AgentPOS
+# routes go to its sidecar; everything else is its own WooCommerce storefront.
+arc-demo.agentposhq.com {
+	@agentpos path /agentpos/* /.well-known/ucp /openapi.json /llms.txt
+	handle @agentpos {
+		reverse_proxy arc-demo-sidecar:8402
+	}
+	handle {
+		reverse_proxy arc-demo-wordpress:80
+	}
+	encode gzip
+}

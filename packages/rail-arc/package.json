@@ -45,7 +45,8 @@
     "e2e:arc-testnet": "tsx scripts/e2e-arc-testnet.ts",
     "e2e:arc-woo": "tsx scripts/e2e-arc-woo.ts",
     "e2e:arc-buyer": "tsx scripts/e2e-arc-buyer.ts",
-    "ci:wallet": "tsx scripts/ci-wallet.ts"
+    "ci:wallet": "tsx scripts/ci-wallet.ts",
+    "buy:arc": "tsx scripts/buy-on-arc.ts"
   },
   "dependencies": {
     "@agentpos/core": "^0.1.5",

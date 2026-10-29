@@ -1,6 +1,6 @@
 {
   "name": "@agentpos/rail-arc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AgentPOS payment rail for Arc: x402 checkout in USDC on Circle's Arc network, settled by the Circle Facilitator Service straight to the merchant's wallet.",
   "license": "Apache-2.0",
   "homepage": "https://agentposhq.com",

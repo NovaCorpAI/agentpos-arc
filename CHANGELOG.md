@@ -2,7 +2,7 @@
 
 Dates are the day the tag was pushed.
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-10-29)
 
 - First npm release of `@agentpos/rail-arc`: Arc networks and USDC (6 decimals, exact
   conversion), x402 checkout settled by the Circle Facilitator Service (`arcStoreNetwork`),

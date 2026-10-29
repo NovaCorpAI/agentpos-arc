@@ -1,0 +1,103 @@
+# The public AgentPOS demo store on Arc TESTNET (arc-demo.agentposhq.com): its own WooCommerce
+# and its own sidecar, fully separate from the mainnet demo store (other DB, other volumes, other
+# data dir). Test money only.
+#
+# From this repository's root on the server:
+#   docker network create edge 2>/dev/null; \
+#   docker compose -f apps/demo-store/docker-compose.prod.yml --env-file /root/.agentpos/arc-demo.env up -d --build
+#
+# Memory is capped on every service: the box has no swap and also runs the mainnet demo store,
+# so this stack must never be the reason the kernel kills something else.
+services:
+  arc-demo-db:
+    image: mariadb:11
+    restart: unless-stopped
+    mem_limit: 320m
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: ${ARC_DEMO_DB_PASSWORD:?}
+      MARIADB_ROOT_PASSWORD: ${ARC_DEMO_DB_ROOT_PASSWORD:?}
+      MARIADB_INNODB_BUFFER_POOL_SIZE: 64M
+    volumes:
+      - arc-demo-db:/var/lib/mysql
+    networks: [arcdemo]
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  arc-demo-wordpress:
+    image: wordpress:php8.3-apache
+    restart: unless-stopped
+    mem_limit: 320m
+    depends_on:
+      arc-demo-db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: arc-demo-db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${ARC_DEMO_DB_PASSWORD:?}
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: |
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+    volumes:
+      - arc-demo-wp:/var/www/html
+    networks: [arcdemo, edge]
+
+  arc-demo-seed:
+    image: wordpress:cli-php8.3
+    mem_limit: 256m
+    depends_on:
+      - arc-demo-wordpress
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: arc-demo-db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${ARC_DEMO_DB_PASSWORD:?}
+      WORDPRESS_DB_NAME: wordpress
+      SITE_URL: https://arc-demo.agentposhq.com
+      SITE_TITLE: "AgentPOS Demo Store (Arc testnet)"
+      ADMIN_PASSWORD: ${ARC_DEMO_ADMIN_PASSWORD:?}
+      SEED_CK: ${ARC_DEMO_WOO_CONSUMER_KEY:?}
+      SEED_CS: ${ARC_DEMO_WOO_CONSUMER_SECRET:?}
+    volumes:
+      - arc-demo-wp:/var/www/html
+      - ./seed:/seed:ro
+    entrypoint: ["sh", "/seed/seed.sh"]
+    networks: [arcdemo]
+
+  arc-demo-sidecar:
+    build:
+      context: ../..
+      dockerfile: apps/demo-store/Dockerfile
+    image: agentpos-arc-demo:prod
+    restart: unless-stopped
+    mem_limit: 256m
+    depends_on:
+      - arc-demo-wordpress
+    environment:
+      AGENTPOS_NETWORK: testnet
+      AGENTPOS_CHECKOUT_ASSET: USDC
+      AGENTPOS_FACILITATOR_API_KEY: ${AGENTPOS_FACILITATOR_API_KEY_TESTNET:?}
+      AGENTPOS_WOO_CONSUMER_KEY: ${ARC_DEMO_WOO_CONSUMER_KEY:?}
+      AGENTPOS_WOO_CONSUMER_SECRET: ${ARC_DEMO_WOO_CONSUMER_SECRET:?}
+      ARC_TESTNET_MERCHANT_ADDRESS: ${ARC_TESTNET_MERCHANT_ADDRESS:?}
+      AGENTPOS_ARC_FACILITATOR_URL: https://api.circle.com/v1/facilitator/x402
+      AGENTPOS_ARC_FACILITATOR_API_KEY_TESTNET: ${AGENTPOS_ARC_FACILITATOR_API_KEY_TESTNET:?}
+    volumes:
+      # agentpos.config.json + .agentpos (SQLite, receipt signer) live here, on the host.
+      - /root/.agentpos/arc-demo:/data
+    expose:
+      - "8402"
+    networks: [arcdemo, edge]
+
+volumes:
+  arc-demo-db:
+  arc-demo-wp:
+
+networks:
+  arcdemo: {}
+  edge:
+    external: true

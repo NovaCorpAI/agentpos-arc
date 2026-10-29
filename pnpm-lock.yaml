@@ -34,8 +34,8 @@ importers:
   packages/rail-arc:
     dependencies:
       '@agentpos/core':
-        specifier: ^0.1.4
-        version: 0.1.4(debug@4.4.3)
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)
       '@x402/core':
         specifier: 2.28.0
         version: 2.28.0
@@ -47,17 +47,17 @@ importers:
         version: 2.57.10(typescript@5.9.3)(zod@4.6.7)
     devDependencies:
       '@agentpos/connectors':
-        specifier: ^0.1.4
-        version: 0.1.4(debug@4.4.3)
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)
       '@agentpos/mcp-buyer':
-        specifier: ^0.1.4
-        version: 0.1.4(debug@4.4.3)
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)
       '@agentpos/scanner':
-        specifier: ^0.1.4
-        version: 0.1.4(debug@4.4.3)
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)
       '@agentpos/site':
-        specifier: ^0.1.4
-        version: 0.1.4(debug@4.4.3)(typescript@5.9.3)
+        specifier: ^0.1.5
+        version: 0.1.5(debug@4.4.3)(typescript@5.9.3)
       '@stellar/stellar-sdk':
         specifier: ^16.3.1
         version: 16.4.0(debug@4.4.3)
@@ -82,45 +82,45 @@ packages:
   '@adraffy/ens-normalize@1.11.1':
     resolution: {integrity: sha512-nhCBV3quEgesuf7c7KYfperqSS14T8bYuvJ8PcLJp6znkZpFc0AuW4qBtr8eKVyPPe/8RSr7sglCWPU5eaxwKQ==}
 
-  '@agentpos/approvals@0.1.4':
-    resolution: {integrity: sha512-DrT+SRt87iIbPDS/PJ1bvI/398UrBbwBm1JJgt2zJFhC8fuycoTOlSG1u88YvuRRyukICuTDFPNlESUL4bGXfg==}
+  '@agentpos/approvals@0.1.5':
+    resolution: {integrity: sha512-l0uz16PEh1CtB48EFJFrqGVXEwg1/lhvwlTI92INoeh20az/fchlz9XvDHpXB7+71HqbGIkuuqtvcVvLJqPe/A==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/connectors@0.1.4':
-    resolution: {integrity: sha512-XtI6TI1AqEe3Qn8lOcrq4tAJB1wNz/m8D5X7P2jqOnA6SMHeE2ogf1+ZlUighXkWO8XNoLO9iR8Fb4uiVl0Khg==}
+  '@agentpos/connectors@0.1.5':
+    resolution: {integrity: sha512-bDTXOqWMFMc8f1ofmBGJiCqtS7Fd9SRl3NVLXEwpD5XWDc5Iw/5O/zO4AXEOwamJGA/RNEQHs/m5JPfTSdWhIA==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/core@0.1.4':
-    resolution: {integrity: sha512-sbsUn7YGrfIlrE+u4/DWfebLB/uJ++AcgP3JUPrMmBMsSImJXszc+tNjygLuFI5Das1G1U6+goDp9ZEs+JAgeA==}
+  '@agentpos/core@0.1.5':
+    resolution: {integrity: sha512-Z4vfIj4Ysm3a5ZnGanUoWBJmF/XgYCtN4C1TRxa5uJ1psDWDeOmNWrkVcDu3ww0oBRpHdhzzlbegHOH70+ZE2Q==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/identity@0.1.4':
-    resolution: {integrity: sha512-SlZkAyEixM0eT8hPEwXInYz6oR1N4o5jl6BzJ4fgQLtCYAvB0CNChgOkTBQL5EylGLKpiR6u2ABx4KOet17rrg==}
+  '@agentpos/identity@0.1.5':
+    resolution: {integrity: sha512-TN8LQFl+/WmO/xoxeOtogrbzAAXb8ZxSNqnHvtg37US9PfCWqLKCgyjJiLE/nAsoGm9Hi6ec2BOj3o7wledXRQ==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/mcp-buyer@0.1.4':
-    resolution: {integrity: sha512-Jefdq+LIdI+e7k7OXSzanaI9Oh1E5gA0R6PNCpfG5MnKkSdS3b+bMzE5zwryDUwpbDETS+G05RkXfslwIdqJEA==}
+  '@agentpos/mcp-buyer@0.1.5':
+    resolution: {integrity: sha512-iUnV4eN0yXyxkEBtMKL7webelorbED4f43o9WIQmy9iGEUAuCsgrKCbJaL6hx7H9ln7lzPRKCJwnmt8Xtt7WGw==}
     engines: {node: '>=22.5'}
     hasBin: true
 
-  '@agentpos/measure@0.1.4':
-    resolution: {integrity: sha512-gFQoNnsZpfXvjkL8LDqw3M9D5QPpv5avmtyIiOM8cSjSnxSY060VH3PX0r+n0BPxV6uaTYxcB3z8uI6lGPo4fA==}
+  '@agentpos/measure@0.1.5':
+    resolution: {integrity: sha512-+Gcfrb6z05DU3nyj1OUI0PQCJR8fyQ5INiwG+yyd01w8N2Xuwss8OFI1C00WXvsKZt4wlEpfEpyLeIUIP3URfg==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/policy@0.1.4':
-    resolution: {integrity: sha512-A3GhKv+ywzKMe7Vf5v5UX8p/HCKNWfVl6nwmh63aNj8zFZPxoyb1lJr5Iu38nPAG8d6vdFMqckj+8Qfqz+DK0A==}
+  '@agentpos/policy@0.1.5':
+    resolution: {integrity: sha512-pVLJp0kbkNyUXNm0IbNG8+DOXIeYYPsJ1UV+R9dxs24PNm+OzM+dDOkuSuM3zg/CgBq6vIG5xRQ93M9ZvaOQ7w==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/receipts@0.1.4':
-    resolution: {integrity: sha512-GhMgXo7GLrs3qjXh7L6D7C85McucjogM68X0gNasnuOd1zhRakTHjJZ7DsOTx3SEYYxFi2oizIHGlht0UJdXKw==}
+  '@agentpos/receipts@0.1.5':
+    resolution: {integrity: sha512-vXiytP9pW6eI7vocJ8qt5YVzL4jhAQsJ8+lsPfZLCYXik3PmWAe0Wfp+gPvgwoLAmffyuhWvKsHuuRZRzRxZhA==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/scanner@0.1.4':
-    resolution: {integrity: sha512-S5C8z7Eobsz/FQYagAXKocLChYq9HlOBPLnoFDWEEYqRpRKR+4+M7nQUkAAd4XuYbITQPwE5OVssgluVeEiTlA==}
+  '@agentpos/scanner@0.1.5':
+    resolution: {integrity: sha512-toNm58is2G2kJiWaHJVw/Pv/cGoi+DhYvxHy0SDUhoscp3f+0oKzqR/VgL1ebJDUfNRKsVLcufjHfS3cCvfifQ==}
     engines: {node: '>=22.5'}
 
-  '@agentpos/site@0.1.4':
-    resolution: {integrity: sha512-QEOdbtZefp8LwFOlhdpR0N0IJWAMg0CIN//GiHPtlVuTd7perJr06/rAopNiIcW33iptYuZqH++MThmuM0tU9Q==}
+  '@agentpos/site@0.1.5':
+    resolution: {integrity: sha512-5D7gDkYDVz5LK8MBHQrcZIc1jP3PjpArHS/YA6H2OvrZzQTVZJDiNPXWX7SQ4qDjvN0BdTCfrK+TsOaECU4vjQ==}
     engines: {node: '>=22.5'}
     hasBin: true
 
@@ -1782,25 +1782,25 @@ snapshots:
 
   '@adraffy/ens-normalize@1.11.1': {}
 
-  '@agentpos/approvals@0.1.4(debug@4.4.3)':
+  '@agentpos/approvals@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/core': 0.1.4(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
       zod: 4.6.7
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@agentpos/connectors@0.1.4(debug@4.4.3)':
+  '@agentpos/connectors@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/core': 0.1.4(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
       zod: 4.6.7
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@agentpos/core@0.1.4(debug@4.4.3)':
+  '@agentpos/core@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/measure': 0.1.4
+      '@agentpos/measure': 0.1.5
       '@stellar/stellar-sdk': 16.4.0(debug@4.4.3)
       '@x402/core': 2.28.0
       '@x402/fetch': 2.28.0
@@ -1812,18 +1812,18 @@ snapshots:
       - debug
       - supports-color
 
-  '@agentpos/identity@0.1.4(debug@4.4.3)':
+  '@agentpos/identity@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/core': 0.1.4(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
       '@stellar/stellar-sdk': 16.4.0(debug@4.4.3)
       zod: 4.6.7
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@agentpos/mcp-buyer@0.1.4(debug@4.4.3)':
+  '@agentpos/mcp-buyer@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/core': 0.1.4(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
       '@clack/prompts': 1.8.1
       '@modelcontextprotocol/sdk': 1.32.2(zod@4.6.7)
       '@stellar/stellar-sdk': 16.4.0(debug@4.4.3)
@@ -1835,28 +1835,28 @@ snapshots:
       - debug
       - supports-color
 
-  '@agentpos/measure@0.1.4': {}
+  '@agentpos/measure@0.1.5': {}
 
-  '@agentpos/policy@0.1.4(debug@4.4.3)':
+  '@agentpos/policy@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/core': 0.1.4(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
       zod: 4.6.7
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@agentpos/receipts@0.1.4(debug@4.4.3)':
+  '@agentpos/receipts@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/core': 0.1.4(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
       '@stellar/stellar-sdk': 16.4.0(debug@4.4.3)
       zod: 4.6.7
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@agentpos/scanner@0.1.4(debug@4.4.3)':
+  '@agentpos/scanner@0.1.5(debug@4.4.3)':
     dependencies:
-      '@agentpos/core': 0.1.4(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
       cheerio: 1.2.0
       fast-xml-parser: 5.11.2
       zod: 4.6.7
@@ -1864,15 +1864,15 @@ snapshots:
       - debug
       - supports-color
 
-  '@agentpos/site@0.1.4(debug@4.4.3)(typescript@5.9.3)':
+  '@agentpos/site@0.1.5(debug@4.4.3)(typescript@5.9.3)':
     dependencies:
-      '@agentpos/approvals': 0.1.4(debug@4.4.3)
-      '@agentpos/connectors': 0.1.4(debug@4.4.3)
-      '@agentpos/core': 0.1.4(debug@4.4.3)
-      '@agentpos/identity': 0.1.4(debug@4.4.3)
-      '@agentpos/policy': 0.1.4(debug@4.4.3)
-      '@agentpos/receipts': 0.1.4(debug@4.4.3)
-      '@agentpos/scanner': 0.1.4(debug@4.4.3)
+      '@agentpos/approvals': 0.1.5(debug@4.4.3)
+      '@agentpos/connectors': 0.1.5(debug@4.4.3)
+      '@agentpos/core': 0.1.5(debug@4.4.3)
+      '@agentpos/identity': 0.1.5(debug@4.4.3)
+      '@agentpos/policy': 0.1.5(debug@4.4.3)
+      '@agentpos/receipts': 0.1.5(debug@4.4.3)
+      '@agentpos/scanner': 0.1.5(debug@4.4.3)
       '@clack/prompts': 1.8.1
       '@hono/node-server': 2.1.5(hono@4.13.14)
       '@modelcontextprotocol/sdk': 1.32.2(zod@4.6.7)

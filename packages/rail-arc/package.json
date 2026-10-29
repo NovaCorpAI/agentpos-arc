@@ -4,6 +4,23 @@
   "description": "AgentPOS payment rail for Arc: x402 checkout in USDC on Circle's Arc network, settled by the Circle Facilitator Service straight to the merchant's wallet.",
   "license": "Apache-2.0",
   "homepage": "https://agentposhq.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NovaCorpAI/agentpos-arc.git",
+    "directory": "packages/rail-arc"
+  },
+  "bugs": {
+    "url": "https://github.com/NovaCorpAI/agentpos-arc/issues"
+  },
+  "keywords": [
+    "agentpos",
+    "x402",
+    "arc",
+    "circle",
+    "usdc",
+    "agentic-commerce",
+    "payments"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,7 +31,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "engines": {
     "node": ">=22.5"
@@ -30,7 +48,7 @@
     "ci:wallet": "tsx scripts/ci-wallet.ts"
   },
   "dependencies": {
-    "@agentpos/core": "^0.1.4",
+    "@agentpos/core": "^0.1.5",
     "@x402/core": "2.28.0",
     "@x402/evm": "2.28.0",
     "viem": "2.57.10"
@@ -40,11 +58,15 @@
     "typescript": "^5.9.3",
     "vitest": "^4.1.11",
     "@stellar/stellar-sdk": "^16.3.1",
-    "@agentpos/site": "^0.1.4",
+    "@agentpos/site": "^0.1.5",
     "@x402/fetch": "2.28.0",
     "tsx": "^4.20.6",
-    "@agentpos/connectors": "^0.1.4",
-    "@agentpos/mcp-buyer": "^0.1.4",
-    "@agentpos/scanner": "^0.1.4"
+    "@agentpos/connectors": "^0.1.5",
+    "@agentpos/mcp-buyer": "^0.1.5",
+    "@agentpos/scanner": "^0.1.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

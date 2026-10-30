@@ -2,6 +2,14 @@
 
 Dates are the day the tag was pushed.
 
+## Unreleased
+
+- `circleWalletSigner`: the buyer agent pays on Arc from a developer-controlled wallet in Circle
+  Wallets, signing through `signTypedData` (explicit `EIP712Domain`, integers as strings, `v`
+  normalized to 27/28 for the Facilitator Service), and refuses any signature that does not
+  recover to the configured address. `buy:arc` uses it when `CIRCLE_BUYER_WALLET_ID` is set;
+  `circle-wallet:setup` creates the wallet on Arc testnet.
+
 ## 0.1.1 (2026-10-29)
 
 - First release published from GitHub Actions through npm trusted publishing, with build

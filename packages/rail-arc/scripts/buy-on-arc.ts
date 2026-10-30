@@ -11,6 +11,9 @@
  * only Arc and caps each payment at MAX_USDC (default 5). The store creates the order only after
  * the Circle Facilitator Service settles. Testnet only; the key is read from the environment and
  * never printed.
+ *
+ * With CIRCLE_BUYER_WALLET_ID set (see circle-wallet:setup) the agent pays from its wallet in
+ * Circle Wallets instead, and no private key is read at all.
  */
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -18,10 +21,17 @@ import { join } from "node:path";
 import { Keypair } from "@stellar/stellar-sdk";
 import { privateKeyToAccount } from "viem/accounts";
 import type { Hex } from "viem";
+import { initiateDeveloperControlledWalletsClient } from "@circle-fin/developer-controlled-wallets";
 import { createLocalKeypairSigner, resolveConfig } from "@agentpos/core";
 import { BuyerService, mandateSchema, SpendingLog } from "@agentpos/mcp-buyer";
 import type { Profile } from "@agentpos/mcp-buyer";
-import { ARC_TESTNET, arcBuyerNetwork, registerArcNetworks } from "../src/index.js";
+import {
+  ARC_TESTNET,
+  arcBuyerNetwork,
+  circleWalletSigner,
+  registerArcNetworks,
+} from "../src/index.js";
+import type { ArcBuyerSigner } from "../src/index.js";
 import { env, need } from "./env.js";
 
 const STORE_URL = (process.env.STORE_URL ?? "https://arc-demo.agentposhq.com").replace(/\/$/, "");
@@ -29,6 +39,21 @@ const MAX_USDC = process.env.MAX_USDC ?? "5";
 
 const t0 = Date.now();
 const log = (msg: string) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s] ${msg}`);
+
+/** The agent's wallet in Circle Wallets when configured, else a local test key. */
+function arcSigner(): ArcBuyerSigner {
+  const walletId = env.CIRCLE_BUYER_WALLET_ID;
+  if (!walletId) return privateKeyToAccount(need("ARC_TESTNET_BUYER_PRIVATE_KEY") as Hex);
+  const client = initiateDeveloperControlledWalletsClient({
+    apiKey: env.CIRCLE_WALLETS_API_KEY_TESTNET ?? need("AGENTPOS_ARC_FACILITATOR_API_KEY_TESTNET"),
+    entitySecret: need("CIRCLE_ENTITY_SECRET"),
+  });
+  log(`signing with Circle Wallets (wallet ${walletId}); no private key in this process`);
+  return circleWalletSigner(client, {
+    walletId,
+    address: need("CIRCLE_BUYER_WALLET_ADDRESS") as `0x${string}`,
+  });
+}
 
 async function main() {
   registerArcNetworks();
@@ -67,14 +92,14 @@ async function main() {
       sites: [STORE_URL],
       createdAt: new Date().toISOString(),
     };
-    const account = privateKeyToAccount(need("ARC_TESTNET_BUYER_PRIVATE_KEY") as Hex);
-    log(`buyer wallet on Arc testnet: ${account.address}`);
+    const signer = arcSigner();
+    log(`buyer wallet on Arc testnet: ${signer.address}`);
     const buyer = new BuyerService({
       profile,
       core,
       spendingLog: new SpendingLog(join(home, "spending.jsonl")),
       signer: createLocalKeypairSigner(stellarKey.secret(), "testnet"),
-      networks: [arcBuyerNetwork(ARC_TESTNET, account)],
+      networks: [arcBuyerNetwork(ARC_TESTNET, signer)],
       log,
     });
 

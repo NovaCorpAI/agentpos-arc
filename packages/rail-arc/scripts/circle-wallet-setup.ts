@@ -14,7 +14,7 @@ import { env, need } from "./env.js";
 
 async function main() {
   const client = initiateDeveloperControlledWalletsClient({
-    apiKey: need("CIRCLE_WALLETS_API_KEY_TESTNET"),
+    apiKey: env.CIRCLE_WALLETS_API_KEY_TESTNET ?? need("AGENTPOS_ARC_FACILITATOR_API_KEY_TESTNET"),
     entitySecret: need("CIRCLE_ENTITY_SECRET"),
   });
 
